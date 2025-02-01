@@ -1,8 +1,8 @@
 import {
   DepthTexture,
   DepthFormat,
-  UnsignedShortType,
   OrthographicCamera,
+  RepeatWrapping,
 } from "three";
 import * as React from "react";
 import { useThree, useFrame } from "@react-three/fiber";
@@ -22,7 +22,8 @@ function useDepthBuffer({
   const depthConfig = React.useMemo(() => {
     const depthTexture = new DepthTexture(w, h);
     depthTexture.format = DepthFormat;
-    depthTexture.type = UnsignedShortType;
+    depthTexture.repeat.y = -1;
+    depthTexture.wrapT = RepeatWrapping;
     return {
       depthTexture,
     };
