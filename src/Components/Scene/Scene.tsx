@@ -1,14 +1,18 @@
 import { CameraControls, DragControls } from "@react-three/drei";
 import { useDepthBuffer } from "../../Hooks";
 import { useLayoutEffect, useRef } from "react";
-import { Mesh, OrthographicCamera } from "three";
 import { useFrame } from "@react-three/fiber";
+import * as THREE from "three";
+
+import { SnowMaterial } from "../../Materials/SnowMaterial";
 
 const SPIN_CUBE = true;
 
 export function Scene() {
-  const orthoCamRef = useRef<OrthographicCamera>(null);
-  const cubeRef = useRef<Mesh>(null);
+  const orthoCamRef = useRef<THREE.OrthographicCamera>(null);
+  const cubeRef = useRef<THREE.Mesh>(null);
+  const groundRef = useRef<THREE.PlaneGeometry>(null);
+
   const depthBuffer = useDepthBuffer({
     size: 1024,
     cameraRef: orthoCamRef,
@@ -16,6 +20,7 @@ export function Scene() {
 
   useLayoutEffect(() => {
     orthoCamRef.current?.lookAt(0, 0, 0);
+    groundRef.current?.rotateX(-Math.PI * 0.5);
   });
 
   useFrame(({ clock }) => {
@@ -45,9 +50,20 @@ export function Scene() {
         </mesh>
       </DragControls>
 
-      {/* Plane */}
-      <mesh position={[0, 0, 0]} rotation={[Math.PI * -0.5, 0, 0]}>
-        <planeGeometry args={[8, 8]} />
+      {/* Light */}
+      {/* <ambientLight intensity={4} /> */}
+
+      {/* Ground */}
+      <mesh position={[0, 0, 0]}>
+        <planeGeometry args={[8, 8, 500, 500]} ref={groundRef} />
+
+        {/* <TestMaterial /> */}
+        <SnowMaterial depthTexture={depthBuffer.depthTexture} />
+      </mesh>
+
+      {/* Debug */}
+      <mesh position={[0, 4, 0]} rotation={[Math.PI * -0.5, 0, 0]}>
+        <planeGeometry args={[2, 2]} />
         <meshBasicMaterial map={depthBuffer.depthTexture} />
       </mesh>
 
