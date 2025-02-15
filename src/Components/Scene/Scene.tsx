@@ -10,7 +10,7 @@ const SPIN_CUBE = true;
 
 export function Scene() {
   const orthoCamRef = useRef<THREE.OrthographicCamera>(null);
-  const cubeRef = useRef<THREE.Mesh>(null);
+  const sphereRef = useRef<THREE.Mesh>(null);
   const groundRef = useRef<THREE.PlaneGeometry>(null);
 
   const depthBuffer = useDepthBuffer({
@@ -24,9 +24,9 @@ export function Scene() {
   });
 
   useFrame(({ clock }) => {
-    if (cubeRef.current && SPIN_CUBE) {
-      cubeRef.current.position.x = Math.cos(clock.getElapsedTime()) * 2;
-      cubeRef.current.position.z = Math.sin(clock.getElapsedTime()) * 2;
+    if (sphereRef.current && SPIN_CUBE) {
+      sphereRef.current.position.x = Math.cos(clock.getElapsedTime()) * 2;
+      sphereRef.current.position.z = Math.sin(clock.getElapsedTime()) * 2;
     }
   });
 
@@ -42,10 +42,10 @@ export function Scene() {
         }}
       />
 
-      {/* Cube */}
+      {/* Sphere */}
       <DragControls>
-        <mesh ref={cubeRef} position={[0, 1, 0]}>
-          <boxGeometry args={[1, 1, 1]} />
+        <mesh ref={sphereRef} position={[0, 1, 0]}>
+          <sphereGeometry args={[1, 254, 254]} />
           <meshBasicMaterial color="hotpink" />
         </mesh>
       </DragControls>
