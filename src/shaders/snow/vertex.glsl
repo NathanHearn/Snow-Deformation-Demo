@@ -1,29 +1,40 @@
 uniform sampler2D uDepthTexture;
-uniform vec2 uResolution;
+uniform float uResolution;
+uniform float uSize;
 
 varying vec2 vUv;
 varying vec3 vNormal;
-varying float vDepth;
 
 void main() {
     vec2 flippedUv = vec2(uv.x, 1.0 - uv.y);
 
     vec3 newPosition = position;
 
-    // Box blur
-    // vec2 textureOffset = 1.0 / uResolution; // (one pixel)
-    float textureShift = 0.003;
-    float d1 = texture2D(uDepthTexture, flippedUv).r;
-    float d2 = texture2D(uDepthTexture, flippedUv + vec2(-textureShift, 0)).r;
-    float d3 = texture2D(uDepthTexture, flippedUv + vec2(textureShift, 0)).r;
-    float d4 = texture2D(uDepthTexture, flippedUv + vec2(0, -textureShift)).r;
-    float d5 = texture2D(uDepthTexture, flippedUv + vec2(0, textureShift)).r;
+    float texel = 1.0 / uResolution;
+    float texelSize = uSize / uResolution;
 
-    float depth = (d1 + d2 + d3 + d4 + d5) / 5.0;
-    newPosition.y += depth;
+    float centerDepth = texture2D(uDepthTexture, flippedUv).r;
+    vec3 center = vec3(position.x, position.y + centerDepth, position.z);
+
+    float rightDepth = texture2D(uDepthTexture, flippedUv + vec2(texel, 0.0)).r;
+    vec3 right = vec3(texelSize, rightDepth, 0.0) - center;
+    float leftDepth = texture2D(uDepthTexture, flippedUv + vec2(-texel, 0.0)).r;
+    vec3 left = vec3(-texelSize, leftDepth, 0.0) - center;
+    float topDepth = texture2D(uDepthTexture, flippedUv + vec2(0.0, -texel)).r;
+    vec3 top = vec3(0.0, topDepth, -texelSize) - center;
+    float bottomDepth = texture2D(uDepthTexture, flippedUv + vec2(0.0, texel)).r;
+    vec3 bottom = vec3(0.0, bottomDepth, texelSize) - center;
+
+    vec3 topRight = cross(right, top);
+    vec3 topLeft = cross(top, left);
+    vec3 bottomLeft = cross(left, bottom);
+    vec3 bottomRight = cross(bottom, right);
+
+    vec3 normal = normalize(topRight + topLeft + bottomLeft + bottomRight);
+
 
     // Final position
-    vec4 modelPosition = modelMatrix * vec4(newPosition, 1.0);
+    vec4 modelPosition = modelMatrix * vec4(center, 1.0);
     vec4 viewPosition = viewMatrix * modelPosition;
     vec4 projectedPosition = projectionMatrix * viewPosition;
     gl_Position = projectedPosition;
@@ -31,5 +42,4 @@ void main() {
     // Varying
     vUv = flippedUv;
     vNormal = normal;
-    vDepth = depth;
 }

@@ -55,7 +55,7 @@ export function Scene() {
 
       {/* Ground */}
       <mesh position={[0, 0, 0]}>
-        <planeGeometry args={[8, 8, 500, 500]} ref={groundRef} />
+        <planeGeometry args={[8, 8, 1000, 1000]} ref={groundRef} />
 
         {/* <TestMaterial /> */}
         <SnowMaterial depthTexture={depthBuffer.depthTexture} />

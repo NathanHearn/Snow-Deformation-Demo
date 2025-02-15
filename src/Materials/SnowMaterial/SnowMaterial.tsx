@@ -15,11 +15,9 @@ export const SnowMaterial = ({
   const uniforms = useMemo(
     () => ({
       uDepthTexture: { value: depthTexture },
-      uResolution: {
-        value: new THREE.Vector2(
-          depthTexture?.image.width,
-          depthTexture?.image.height
-        ),
+      uResolution: { value: depthTexture?.image.width },
+      uSize: {
+        value: 8,
       },
     }),
     [depthTexture]
