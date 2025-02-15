@@ -41,6 +41,7 @@ export function Scene() {
         azimuth={0.25}
       />
       <Environment preset={"park"} />
+      <directionalLight position={[0, 10, 0]} intensity={1} color={0xffccdd} />
 
       {/* Sphere */}
       <DragControls>

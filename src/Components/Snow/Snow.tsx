@@ -3,8 +3,8 @@ import { useLayoutEffect, useMemo, useRef } from "react";
 import { useDepthBuffer } from "../../Hooks/useDepthBuffer";
 import { SnowMaterial } from "./materials/SnowMaterial";
 
-const depthBufferResolution = 1024;
-const planeSize = 16;
+const depthBufferResolution = 1024 * 1;
+const planeSize = 8 * 4;
 
 export const Snow = () => {
   // Refs
