@@ -4,7 +4,7 @@ import { useDepthBuffer } from "../../Hooks/useDepthBuffer";
 import { SnowMaterial } from "./materials/SnowMaterial";
 
 const depthBufferResolution = 1024;
-const planeSize = 8;
+const planeSize = 16;
 
 export const Snow = () => {
   // Refs

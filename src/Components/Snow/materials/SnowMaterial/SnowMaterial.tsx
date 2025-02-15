@@ -1,7 +1,6 @@
 import * as THREE from "three";
-import { useMemo, useRef } from "react";
-
-// Import shaders
+import { useMemo } from "react";
+import CustomShaderMaterial from "three-custom-shader-material";
 import snowVertex from "../../shaders/snow/vertex.glsl";
 import snowFragment from "../../shaders/snow/fragment.glsl";
 
@@ -14,8 +13,6 @@ export const SnowMaterial = ({
   resolution: number;
   size: number;
 }) => {
-  // Refs
-  const shaderRef = useRef<THREE.ShaderMaterial>(null);
   // Shader uniforms
   const uniforms = useMemo(
     () => ({
@@ -27,11 +24,17 @@ export const SnowMaterial = ({
   );
 
   return (
-    <shaderMaterial
+    <CustomShaderMaterial
+      baseMaterial={THREE.MeshPhysicalMaterial}
+      color={0xe0f7ff} // Slightly blueish white
+      roughness={0.8} // Powdery snow
+      metalness={0.05} // Almost non-metallic
+      clearcoat={0.8} // Icy layer effect
+      clearcoatRoughness={0.4} // Adds a bit of roughness to ice
+      sheen={0.5} // Subtle light scattering
       vertexShader={snowVertex}
       fragmentShader={snowFragment}
       uniforms={uniforms}
-      ref={shaderRef}
     />
   );
 };

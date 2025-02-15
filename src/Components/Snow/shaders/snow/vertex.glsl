@@ -2,9 +2,6 @@ uniform sampler2D uDepthTexture;
 uniform float uResolution;
 uniform float uSize;
 
-varying vec2 vUv;
-varying vec3 vNormal;
-
 void main() {
     vec2 flippedUv = vec2(uv.x, 1.0 - uv.y);
 
@@ -30,16 +27,6 @@ void main() {
     vec3 bottomLeft = cross(left, bottom);
     vec3 bottomRight = cross(bottom, right);
 
-    vec3 normal = normalize(topRight + topLeft + bottomLeft + bottomRight);
-
-
-    // Final position
-    vec4 modelPosition = modelMatrix * vec4(center, 1.0);
-    vec4 viewPosition = viewMatrix * modelPosition;
-    vec4 projectedPosition = projectionMatrix * viewPosition;
-    gl_Position = projectedPosition;
-
-    // Varying
-    vUv = flippedUv;
-    vNormal = normal;
+    csm_Normal = normalize(topRight + topLeft + bottomLeft + bottomRight);
+    csm_Position = center;
 }

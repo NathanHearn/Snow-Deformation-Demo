@@ -1,4 +1,9 @@
-import { CameraControls, DragControls } from "@react-three/drei";
+import {
+  CameraControls,
+  DragControls,
+  Environment,
+  Sky,
+} from "@react-three/drei";
 import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
@@ -27,6 +32,15 @@ export function Scene() {
           right: 1,
         }}
       />
+
+      {/* Sky */}
+      <Sky
+        distance={450000}
+        sunPosition={[0, 1, 0]}
+        inclination={0}
+        azimuth={0.25}
+      />
+      <Environment preset={"park"} />
 
       {/* Sphere */}
       <DragControls>
