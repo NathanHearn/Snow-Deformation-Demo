@@ -7,20 +7,23 @@ import snowFragment from "../../shaders/snow/fragment.glsl";
 
 export const SnowMaterial = ({
   depthTexture,
+  resolution,
+  size,
 }: {
   depthTexture: THREE.DepthTexture | null;
+  resolution: number;
+  size: number;
 }) => {
+  // Refs
   const shaderRef = useRef<THREE.ShaderMaterial>(null);
-
+  // Shader uniforms
   const uniforms = useMemo(
     () => ({
       uDepthTexture: { value: depthTexture },
-      uResolution: { value: depthTexture?.image.width },
-      uSize: {
-        value: 8,
-      },
+      uResolution: { value: resolution },
+      uSize: { value: size },
     }),
-    [depthTexture]
+    [depthTexture, resolution, size]
   );
 
   return (
