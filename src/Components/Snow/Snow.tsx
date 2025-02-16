@@ -10,7 +10,7 @@ export const Snow = () => {
   // Refs
   const orthoCamRef = useRef<THREE.OrthographicCamera>(null);
 
-  const depthBuffer = useDepthBuffer({
+  const depthTexture = useDepthBuffer({
     size: depthBufferResolution,
     cameraRef: orthoCamRef,
   });
@@ -34,7 +34,7 @@ export const Snow = () => {
     <>
       <mesh geometry={planeGeometry}>
         <SnowMaterial
-          depthTexture={depthBuffer.depthTexture}
+          depthTexture={depthTexture}
           resolution={depthBufferResolution}
           size={planeSize}
         />
