@@ -6,7 +6,7 @@ const planeSize = 8 * 4;
 
 export function Box() {
   const material = useMemo(() => {
-    return new THREE.MeshBasicMaterial({ color: "hotpink" });
+    return new THREE.MeshStandardMaterial({ color: "lightblue" });
   }, []);
   const wallGeometry = useMemo(() => {
     return new THREE.BoxGeometry(2, 0.5, planeSize);
@@ -17,7 +17,6 @@ export function Box() {
       <RigidBody type="fixed">
         <mesh position={[0, -0.25, 0]} material={material}>
           <boxGeometry args={[planeSize, 0.5, planeSize]} />
-          <meshStandardMaterial color="lightblue" />
         </mesh>
         <mesh
           position={[planeSize * 0.5 + 0.25, 0.5, 0]}
