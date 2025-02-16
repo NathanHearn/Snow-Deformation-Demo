@@ -1,25 +1,28 @@
-import {
-  CameraControls,
-  DragControls,
-  Environment,
-  Sky,
-} from "@react-three/drei";
-import { useRef } from "react";
-import { useFrame } from "@react-three/fiber";
-import * as THREE from "three";
+import { CameraControls, Environment, Sky } from "@react-three/drei";
 import { Snow } from "../Snow";
-
-const SPIN_CUBE = true;
+import { Physics, RigidBody } from "@react-three/rapier";
+import { useRef } from "react";
+import { Box } from "../Box";
 
 export function Scene() {
-  const sphereRef = useRef<THREE.Mesh>(null);
+  const sphereRef = useRef(null);
+  const cubeRef = useRef(null);
+  const torusRef = useRef(null);
+  const cylinderRef = useRef(null);
 
-  useFrame(({ clock }) => {
-    if (sphereRef.current && SPIN_CUBE) {
-      sphereRef.current.position.x = Math.cos(clock.getElapsedTime()) * 2;
-      sphereRef.current.position.z = Math.sin(clock.getElapsedTime()) * 2;
-    }
-  });
+  const onBodyClick = (body: any, multiplier: number) => {
+    body.wakeUp();
+    body.applyImpulse({
+      x: (Math.random() - 0.5) * multiplier,
+      y: (Math.random() - 0.5) * multiplier,
+      z: (Math.random() - 0.5) * multiplier,
+    });
+    body.applyTorqueImpulse({
+      x: (Math.random() - 0.5) * multiplier,
+      y: (Math.random() - 0.5) * multiplier,
+      z: (Math.random() - 0.5) * multiplier,
+    });
+  };
 
   return (
     <>
@@ -40,18 +43,60 @@ export function Scene() {
         inclination={0}
         azimuth={0.25}
       />
-      <Environment preset={"park"} />
-      <directionalLight position={[0, 10, 0]} intensity={1} color={0xffccdd} />
+      <Environment preset={"park"} environmentIntensity={1} />
+      <directionalLight
+        position={[0, 10, 0]}
+        intensity={0.5}
+        color={0xffccdd}
+      />
 
-      {/* Sphere */}
-      <DragControls>
-        <mesh ref={sphereRef} position={[0, 1, 0]}>
-          <sphereGeometry args={[1, 254, 254]} />
-          <meshBasicMaterial color="hotpink" />
-        </mesh>
-      </DragControls>
-
+      {/* Snow */}
       <Snow />
+
+      {/* Physics */}
+      <Physics>
+        <RigidBody colliders="ball" ref={sphereRef}>
+          <mesh
+            position={[-2, 10, -2]}
+            onClick={() => onBodyClick(sphereRef.current, 40)}
+          >
+            <sphereGeometry args={[1.2, 254, 254]} />
+            <meshStandardMaterial color="coral" />
+          </mesh>
+        </RigidBody>
+
+        <RigidBody ref={cubeRef}>
+          <mesh
+            position={[2, 10, -2]}
+            onClick={() => onBodyClick(cubeRef.current, 100)}
+          >
+            <boxGeometry args={[1.5, 4, 1.5]} />
+            <meshStandardMaterial color="darkseagreen" />
+          </mesh>
+        </RigidBody>
+
+        <RigidBody ref={torusRef} colliders="hull">
+          <mesh
+            position={[2, 10, 2]}
+            onClick={() => onBodyClick(torusRef.current, 100)}
+          >
+            <torusGeometry args={[1.5, 0.5, 16, 100]} />
+            <meshStandardMaterial color="dodgerblue" />
+          </mesh>
+        </RigidBody>
+
+        <RigidBody ref={cylinderRef} colliders="hull">
+          <mesh
+            position={[-2, 10, 2]}
+            onClick={() => onBodyClick(cylinderRef.current, 80)}
+          >
+            <cylinderGeometry args={[1, 1, 2]} />
+            <meshStandardMaterial color="violet" />
+          </mesh>
+        </RigidBody>
+
+        <Box />
+      </Physics>
     </>
   );
 }
