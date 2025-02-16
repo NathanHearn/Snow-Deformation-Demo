@@ -9,7 +9,7 @@ export const SnowMaterial = ({
   resolution,
   size,
 }: {
-  depthTexture: THREE.DepthTexture | null;
+  depthTexture: THREE.Texture | null;
   resolution: number;
   size: number;
 }) => {

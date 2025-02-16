@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { useLayoutEffect, useMemo, useRef } from "react";
-import { useDepthBuffer } from "../../Hooks/useDepthBuffer";
+import { useBlur, useDepth } from "./Hooks";
 import { SnowMaterial } from "./materials/SnowMaterial";
 
 const depthBufferResolution = 1024 * 1;
@@ -10,10 +10,14 @@ export const Snow = () => {
   // Refs
   const orthoCamRef = useRef<THREE.OrthographicCamera>(null);
 
-  const depthTexture = useDepthBuffer({
+  // Get depth texture from orthographic camera
+  const depthTexture = useDepth({
     size: depthBufferResolution,
     cameraRef: orthoCamRef,
   });
+
+  // Apply blur to depth map an return as simple texture
+  const blurredTexture = useBlur({ size: depthBufferResolution, depthTexture });
 
   useLayoutEffect(() => {
     orthoCamRef.current?.lookAt(0, 0, 0);
@@ -34,7 +38,7 @@ export const Snow = () => {
     <>
       <mesh geometry={planeGeometry}>
         <SnowMaterial
-          depthTexture={depthTexture}
+          depthTexture={blurredTexture}
           resolution={depthBufferResolution}
           size={planeSize}
         />
