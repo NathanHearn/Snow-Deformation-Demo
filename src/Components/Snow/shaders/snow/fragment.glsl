@@ -1,5 +1,8 @@
+varying float vDepth;
+
 void main() {
-    // gl_FragColor = vec4(vec3(vNormal), 1.0);
-    // #include <tonemapping_fragment>
-    // #include <colorspace_fragment>
+    vec4 deepColor = vec4(0.4, 0.6, 0.8, 1.0);
+    vec4 mixedColor = mix(csm_DiffuseColor, deepColor, 1.0 - vDepth);
+
+    csm_DiffuseColor = mixedColor;
 }

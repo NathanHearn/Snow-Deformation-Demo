@@ -38,7 +38,7 @@ export const Snow = () => {
     <>
       <mesh position={[0, 5, 0]}>
         <planeGeometry args={[1, 1]} />
-        <meshBasicMaterial map={blurredTexture} />
+        <meshBasicMaterial map={blurredTexture} side={THREE.DoubleSide} />
       </mesh>
       <mesh geometry={planeGeometry}>
         <SnowMaterial

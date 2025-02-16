@@ -2,6 +2,8 @@ uniform sampler2D uDepthTexture;
 uniform float uResolution;
 uniform float uSize;
 
+varying float vDepth;
+
 void main() {
     vec2 flippedUv = vec2(uv.x, 1.0 - uv.y);
 
@@ -29,4 +31,6 @@ void main() {
 
     csm_Normal = normalize(topRight + topLeft + bottomLeft + bottomRight);
     csm_Position = center;
+
+    vDepth = centerDepth;
 }
