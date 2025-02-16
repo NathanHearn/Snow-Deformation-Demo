@@ -33,7 +33,9 @@ function useBlur({
     const quadGeometry = new THREE.PlaneGeometry(2, 2);
     const postProcessingMaterial = new THREE.ShaderMaterial({
       uniforms: {
-        depthMap: { value: null }, // This will hold the depth texture
+        uDepthTexture: { value: null }, // This will hold the depth texture
+        uResolution: { value: size },
+        uBlurRadius: { value: 2.5 },
       },
       vertexShader: blurVertex,
       fragmentShader: blurFragment,
@@ -47,11 +49,11 @@ function useBlur({
       camera: postProcessingCamera,
       material: postProcessingMaterial,
     };
-  }, []);
+  }, [size]);
 
   useFrame((state) => {
     state.gl.setRenderTarget(postProcessingFBO);
-    postProcessingScene.material.uniforms.depthMap.value = depthTexture;
+    postProcessingScene.material.uniforms.uDepthTexture.value = depthTexture;
     state.gl.render(postProcessingScene.scene, postProcessingScene.camera);
     state.gl.setRenderTarget(null);
   });

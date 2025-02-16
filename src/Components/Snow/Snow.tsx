@@ -36,6 +36,10 @@ export const Snow = () => {
 
   return (
     <>
+      <mesh position={[0, 5, 0]}>
+        <planeGeometry args={[1, 1]} />
+        <meshBasicMaterial map={blurredTexture} />
+      </mesh>
       <mesh geometry={planeGeometry}>
         <SnowMaterial
           depthTexture={blurredTexture}
