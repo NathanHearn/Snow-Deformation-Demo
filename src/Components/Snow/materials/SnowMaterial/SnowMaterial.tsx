@@ -25,6 +25,7 @@ export const SnowMaterial = ({
 
   return (
     <CustomShaderMaterial
+      // baseMaterial={THREE.MeshNormalMaterial}
       baseMaterial={THREE.MeshPhysicalMaterial}
       color={0xe0f7ff} // Slightly blueish white
       roughness={0.8} // Powdery snow
