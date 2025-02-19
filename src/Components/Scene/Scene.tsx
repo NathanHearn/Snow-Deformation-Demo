@@ -3,6 +3,7 @@ import { Snow } from "../Snow";
 import { Physics } from "@react-three/rapier";
 import { Box } from "../Box";
 import { Ball } from "../Ball";
+import { Car } from "../Car";
 
 export function Scene() {
   return (
@@ -37,6 +38,8 @@ export function Scene() {
       {/* Physics */}
       <Physics>
         <Ball />
+
+        <Car />
 
         <Box />
       </Physics>
