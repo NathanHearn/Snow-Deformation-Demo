@@ -3,7 +3,7 @@ import { Snow } from "../Snow";
 import { Physics } from "@react-three/rapier";
 import { Box } from "../Box";
 import { Ball } from "../Ball";
-import { Car } from "../Car";
+import { RevoluteJointVehicle } from "../Car";
 
 export function Scene() {
   return (
@@ -39,7 +39,7 @@ export function Scene() {
       <Physics>
         <Ball />
 
-        <Car />
+        <RevoluteJointVehicle position={[0, 1, 0]} />
 
         <Box />
       </Physics>
