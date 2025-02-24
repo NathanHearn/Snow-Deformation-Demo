@@ -31,19 +31,12 @@ export function Scene() {
         color={0xffccdd}
       />
 
-      {/* <Box position={[0, 1, 0]} /> */}
-      {/* <Box position={[1, 0, 0]} /> */}
-
       {/* Snow */}
       <Snow />
 
       {/* Physics */}
-      <Physics debug>
-        {/* <Ball /> */}
-
+      <Physics>
         <Vehicle position={[0, 10, 0]} rotation={[0, 0, 0]} />
-
-        {/* <Box /> */}
 
         <Base />
       </Physics>

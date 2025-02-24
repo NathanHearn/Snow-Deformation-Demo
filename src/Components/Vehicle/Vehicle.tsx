@@ -11,18 +11,16 @@ import { RefObject, useRef, useState } from "react";
 import * as THREE from "three";
 import { WheelInfo, useVehicleController } from "./use-vehicle-controller";
 import { KeyControls } from "../App";
-import { useControls } from "leva";
+import { Wheel, wheelRadius } from "./Components/Wheel";
+import { Body } from "./Components/Body";
 
 // https://github.com/michael-go/raphcar
 // https://sketchfab.com/3d-models/low-poly-race-track-b40628339fde4b2fbe41711edc7c7a93
 
 const spawn = {
-  position: [0, 2, 0] as THREE.Vector3Tuple,
-  rotation: [0, Math.PI / 2, 0] as THREE.Vector3Tuple,
+  position: [0, 1, 0] as THREE.Vector3Tuple,
+  rotation: [0, 0, 0] as THREE.Vector3Tuple,
 };
-
-const wheelRadius = 0.3;
-const wheelHeight = -0.5;
 
 const wheelInfo: Omit<WheelInfo, "position"> = {
   axleCs: new THREE.Vector3(0, 0, -1),
@@ -34,11 +32,11 @@ const wheelInfo: Omit<WheelInfo, "position"> = {
 
 const wheels: WheelInfo[] = [
   // front
-  { position: new THREE.Vector3(-0.65, wheelHeight, -0.45), ...wheelInfo },
-  { position: new THREE.Vector3(-0.65, wheelHeight, 0.45), ...wheelInfo },
+  { position: new THREE.Vector3(-0.7, -0.35, -0.45), ...wheelInfo },
+  { position: new THREE.Vector3(-0.7, -0.35, 0.45), ...wheelInfo },
   // rear
-  { position: new THREE.Vector3(0.65, wheelHeight, -0.45), ...wheelInfo },
-  { position: new THREE.Vector3(0.65, wheelHeight, 0.45), ...wheelInfo },
+  { position: new THREE.Vector3(0.725, -0.35, -0.45), ...wheelInfo },
+  { position: new THREE.Vector3(0.725, -0.35, 0.45), ...wheelInfo },
 ];
 
 const cameraOffset = new THREE.Vector3(7, 3, 0);
@@ -69,13 +67,11 @@ export const Vehicle = ({ position, rotation }: VehicleProps) => {
     wheels
   );
 
-  const { accelerateForce, brakeForce, steerAngle, controlCamera } =
-    useControls("rapier-dynamic-raycast-vehicle-controller", {
-      accelerateForce: { value: 1, min: 0, max: 10 },
-      brakeForce: { value: 0.05, min: 0, max: 0.5, step: 0.01 },
-      steerAngle: { value: Math.PI / 24, min: 0, max: Math.PI / 12 },
-      controlCamera: { value: true },
-    });
+  const accelerateForce = 1,
+    brakeForce = 0.02,
+    steerAngle = Math.PI / 6,
+    controlCamera = false,
+    mass = 1;
 
   const [smoothedCameraPosition] = useState(new THREE.Vector3(0, 100, -300));
   const [smoothedCameraTarget] = useState(new THREE.Vector3());
@@ -229,11 +225,17 @@ export const Vehicle = ({ position, rotation }: VehicleProps) => {
         colliders={false}
         type="dynamic"
       >
-        <CuboidCollider args={[0.8, 0.2, 0.4]} />
+        <CuboidCollider
+          args={[1.2, 0.5, 0.6]}
+          position={[0, 0.1, 0]}
+          mass={mass}
+        />
+
+        <Body />
 
         {/* chassis */}
         <mesh ref={chasisMeshRef}>
-          <boxGeometry args={[1.6, 0.4, 0.8]} />
+          <boxGeometry args={[0.1, 0.1, 0.1]} />
         </mesh>
 
         {/* wheels */}
@@ -243,12 +245,7 @@ export const Vehicle = ({ position, rotation }: VehicleProps) => {
             ref={(ref) => ((wheelsRef.current as any)[index] = ref)} // eslint-disable-line @typescript-eslint/no-explicit-any
             position={wheel.position}
           >
-            <group rotation-x={-Math.PI / 2}>
-              <mesh>
-                <cylinderGeometry args={[wheelRadius, wheelRadius, 0.25, 16]} />
-                <meshStandardMaterial color="#222" />
-              </mesh>
-            </group>
+            <Wheel />
           </group>
         ))}
       </RigidBody>
