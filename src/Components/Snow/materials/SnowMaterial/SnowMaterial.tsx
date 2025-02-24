@@ -8,10 +8,12 @@ export const SnowMaterial = ({
   depthTexture,
   resolution,
   size,
+  depth,
 }: {
   depthTexture: THREE.Texture | null;
   resolution: number;
   size: number;
+  depth: number;
 }) => {
   // Shader uniforms
   const uniforms = useMemo(
@@ -19,8 +21,9 @@ export const SnowMaterial = ({
       uDepthTexture: { value: depthTexture },
       uResolution: { value: resolution },
       uSize: { value: size },
+      uDepth: { value: depth },
     }),
-    [depthTexture, resolution, size]
+    [depthTexture, resolution, size, depth]
   );
 
   return (

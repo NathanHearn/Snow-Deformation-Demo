@@ -1,6 +1,7 @@
 uniform sampler2D uDepthTexture;
 uniform float uResolution;
 uniform float uSize;
+uniform float uDepth;
 
 varying float vDepth;
 
@@ -18,7 +19,7 @@ float sampleDepth(vec2 uv) {
     float noise = noise1 + noise2;
     float noiseMultiplier = smoothstep(0.5, 1.0, depth);
 
-    return depth + (noise * noiseMultiplier);
+    return depth * (1.0 * uDepth) + (noise * noiseMultiplier);
 }
 
 void main() {

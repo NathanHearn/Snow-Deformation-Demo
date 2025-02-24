@@ -5,6 +5,7 @@ import { SnowMaterial } from "./materials/SnowMaterial";
 
 const depthBufferResolution = 1024 * 1;
 const planeSize = 8 * 4;
+const snowDepth = 0.5;
 
 export const Snow = () => {
   // Refs
@@ -45,6 +46,7 @@ export const Snow = () => {
           depthTexture={blurredTexture}
           resolution={depthBufferResolution}
           size={planeSize}
+          depth={snowDepth}
         />
       </mesh>
       <orthographicCamera
@@ -56,7 +58,7 @@ export const Snow = () => {
           planeSize * 0.5,
           -planeSize * 0.5,
           0.1,
-          1,
+          snowDepth,
         ]}
       />
     </>

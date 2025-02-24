@@ -1,9 +1,8 @@
 import { CameraControls, Environment, Sky } from "@react-three/drei";
 import { Snow } from "../Snow";
 import { Physics } from "@react-three/rapier";
-import { Box } from "../Box";
 import { Ball } from "../Ball";
-import { RevoluteJointVehicle } from "../Car";
+import { Base } from "../Base";
 
 export function Scene() {
   return (
@@ -32,16 +31,21 @@ export function Scene() {
         color={0xffccdd}
       />
 
+      {/* <Box position={[0, 1, 0]} /> */}
+      {/* <Box position={[1, 0, 0]} /> */}
+
       {/* Snow */}
       <Snow />
 
       {/* Physics */}
-      <Physics>
+      <Physics debug>
         <Ball />
 
-        <RevoluteJointVehicle position={[0, 1, 0]} />
+        {/* <RevoluteJointVehicle position={[0, 1, 0]} /> */}
 
-        <Box />
+        {/* <Box /> */}
+
+        <Base />
       </Physics>
     </>
   );
