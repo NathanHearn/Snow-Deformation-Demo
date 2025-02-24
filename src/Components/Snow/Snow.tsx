@@ -5,7 +5,7 @@ import { SnowMaterial } from "./materials/SnowMaterial";
 
 const depthBufferResolution = 1024 * 1;
 const planeSize = 8 * 4;
-const snowDepth = 0.5;
+const snowDepth = 0.25;
 
 export const Snow = () => {
   // Refs

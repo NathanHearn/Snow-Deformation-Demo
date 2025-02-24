@@ -1,8 +1,8 @@
 import { CameraControls, Environment, Sky } from "@react-three/drei";
 import { Snow } from "../Snow";
 import { Physics } from "@react-three/rapier";
-import { Ball } from "../Ball";
 import { Base } from "../Base";
+import { Vehicle } from "../Vehicle";
 
 export function Scene() {
   return (
@@ -39,9 +39,9 @@ export function Scene() {
 
       {/* Physics */}
       <Physics debug>
-        <Ball />
+        {/* <Ball /> */}
 
-        {/* <RevoluteJointVehicle position={[0, 1, 0]} /> */}
+        <Vehicle position={[0, 10, 0]} rotation={[0, 0, 0]} />
 
         {/* <Box /> */}
 
