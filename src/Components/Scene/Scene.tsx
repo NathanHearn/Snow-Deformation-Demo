@@ -18,16 +18,20 @@ export function Scene() {
       />
 
       {/* Sky */}
-      <Sky
-        distance={450000}
-        sunPosition={[0, 1, 0]}
-        inclination={0}
-        azimuth={0.25}
-      />
-      <Environment preset={"park"} environmentIntensity={1} />
+      <Environment background={true}>
+        <Sky
+          distance={450000}
+          sunPosition={[0, 1, 0]}
+          inclination={0.0}
+          azimuth={0.55}
+          rayleigh={0.1}
+          turbidity={1}
+        />
+      </Environment>
+
       <directionalLight
         position={[0, 10, 0]}
-        intensity={0.5}
+        intensity={0.3}
         color={0xffccdd}
       />
 
@@ -36,7 +40,7 @@ export function Scene() {
 
       {/* Physics */}
       <Physics>
-        <Vehicle position={[0, 10, 0]} rotation={[0, 0, 0]} />
+        <Vehicle position={[0, 2, 0]} rotation={[0, 0, 0]} />
 
         <Base />
       </Physics>

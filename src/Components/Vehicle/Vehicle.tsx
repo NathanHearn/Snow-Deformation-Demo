@@ -7,7 +7,7 @@ import {
   RigidBody,
   useRapier,
 } from "@react-three/rapier";
-import { RefObject, useRef, useState } from "react";
+import { RefObject, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { WheelInfo, useVehicleController } from "./use-vehicle-controller";
 import { KeyControls } from "../App";
@@ -61,6 +61,13 @@ export const Vehicle = ({ position, rotation }: VehicleProps) => {
   const chasisBodyRef = useRef<RapierRigidBody>(null!);
   const wheelsRef: RefObject<(THREE.Object3D | null)[]> = useRef([]);
 
+  const chasisGeometry = useMemo(() => {
+    const geometry = new THREE.PlaneGeometry(2.2, 0.98);
+    geometry.translate(0, 0, 0.3);
+    geometry.rotateX(Math.PI / 2);
+    return geometry;
+  }, []);
+
   const { vehicleController } = useVehicleController(
     chasisBodyRef,
     wheelsRef as RefObject<THREE.Object3D[]>,
@@ -70,7 +77,7 @@ export const Vehicle = ({ position, rotation }: VehicleProps) => {
   const accelerateForce = 1,
     brakeForce = 0.02,
     steerAngle = Math.PI / 6,
-    controlCamera = false,
+    controlCamera = true,
     mass = 1;
 
   const [smoothedCameraPosition] = useState(new THREE.Vector3(0, 100, -300));
@@ -234,9 +241,7 @@ export const Vehicle = ({ position, rotation }: VehicleProps) => {
         <Body />
 
         {/* chassis */}
-        <mesh ref={chasisMeshRef}>
-          <boxGeometry args={[0.1, 0.1, 0.1]} />
-        </mesh>
+        <mesh ref={chasisMeshRef} geometry={chasisGeometry} />
 
         {/* wheels */}
         {wheels.map((wheel, index) => (

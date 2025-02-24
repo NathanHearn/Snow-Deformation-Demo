@@ -16,10 +16,10 @@ float sampleDepth(vec2 uv) {
     float noise2 = simplexNoise2d(uv * 10.0);
     noise2 = smoothstep(-1.0, 1.0, noise2) * 0.01;
 
-    float noise = noise1 + noise2;
+    float noise = (noise1 + noise2) * 0.7;
     float noiseMultiplier = smoothstep(0.5, 1.0, depth);
 
-    return depth * (1.0 * uDepth) + (noise * noiseMultiplier);
+    return depth * (1.0 * uDepth) - (noise * noiseMultiplier);
 }
 
 void main() {
